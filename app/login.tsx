@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, SafeAreaView, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
@@ -9,6 +9,7 @@ import { useTranslation } from '@/context/TranslationContext';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -39,9 +40,19 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView>
         <ScrollView>
+          <View style={styles.header}>
+            <TouchableOpacity 
+              onPress={() => router.back()} 
+              style={styles.backButton}
+            >
+              <IconSymbol name="chevron.left" size={24} color="#FFFFFF" />
+              <ThemedText style={styles.backText}>{t('global.buttons.back')}</ThemedText>
+            </TouchableOpacity>
+          </View>
+
           <ThemedView style={styles.container}>
             <ThemedView 
               style={styles.formContainer}
@@ -82,15 +93,6 @@ export default function LoginScreen() {
                   {t('auth.login.noAccount')}
                 </ThemedText>
               </TouchableOpacity>
-
-              <TouchableOpacity 
-                style={styles.linkButton}
-                onPress={() => router.push('/onboarding')}
-              >
-                <ThemedText style={[styles.linkText, { color: Colors[colorScheme].primary }]}>
-                  {t('auth.login.backToStart')}
-                </ThemedText>
-              </TouchableOpacity>
             </ThemedView>
           </ThemedView>
         </ScrollView>
@@ -100,9 +102,26 @@ export default function LoginScreen() {
 }
 
 export const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#000000',
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backText: {
+    marginLeft: 8,
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
   container: {
     flex: 1,
-    marginTop: 100,
+    marginTop: 60,
     justifyContent: 'center',
     padding: 20,
   },
